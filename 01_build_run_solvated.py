@@ -19,9 +19,9 @@ from sys import stdout
 tleap_in=b"""
 source leaprc.protein.ff14SB
 m = sequence { ACE ALA NME }
-# solvatebox m TIP3PBOX 8
-saveAmberParm m diala.prmtop diala.rst7
-savepdb m diala.pdb
+solvatebox m TIP3PBOX 8
+saveAmberParm m diala_s.prmtop diala_s.rst7
+savepdb m diala_s.pdb
 quit
 """
 
@@ -38,8 +38,8 @@ print(tleap_out.decode())
 
 # In[6]:
 
-prmtop = AmberPrmtopFile('diala.prmtop')
-inpcrd = AmberInpcrdFile('diala.rst7')
+prmtop = AmberPrmtopFile('diala_s.prmtop')
+inpcrd = AmberInpcrdFile('diala_s.rst7')
 
 
 # In[8]:
@@ -73,22 +73,22 @@ simulation.context.setPositions(inpcrd.positions)
 if inpcrd.boxVectors is not None:
     simulation.context.setPeriodicBoxVectors(*inpcrd.boxVectors)
 
-PDBReporter("pre.pdb",1).report(simulation,simulation.context.getState(getPositions=True))
+PDBReporter("pre_s.pdb",1).report(simulation,simulation.context.getState(getPositions=True))
 
 
 # In[17]:
 
 simulation.minimizeEnergy()
-PDBReporter("mini.pdb",1).report(simulation,simulation.context.getState(getPositions=True))
+PDBReporter("mini_s.pdb",1).report(simulation,simulation.context.getState(getPositions=True))
 
 
 # In[19]:
 
-simulation.reporters.append(DCDReporter('output.dcd', 1000))
-simulation.reporters.append(StateDataReporter("output.log", 1000, step=True,
+simulation.reporters.append(DCDReporter('output_s.dcd', 1000))
+simulation.reporters.append(StateDataReporter("output_s.log", 1000, step=True,
         potentialEnergy=True, temperature=True,volume=True))
 simulation.step(10000)
-simulation.saveState("checkpoint.state")
+simulation.saveState("checkpoint_s.state")
 
 
 # -------------
