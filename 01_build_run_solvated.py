@@ -12,6 +12,7 @@ from sys import stdout
 
 tleap_in=b"""
 source leaprc.protein.ff14SB
+source leaprc.water.tip3p
 m = sequence { ACE ALA NME }
 solvatebox m TIP3PBOX 8
 saveAmberParm m diala_s.prmtop diala_s.rst7
@@ -38,7 +39,7 @@ inpcrd = AmberInpcrdFile('diala_s.rst7')
 
 # In[8]:
 
-system = prmtop.createSystem(nonbondedMethod=CutoffNonPeriodic, 
+system = prmtop.createSystem(nonbondedMethod=CutoffPeriodic, 
                              nonbondedCutoff=1*nanometer,
                              constraints=HBonds)
 
@@ -46,7 +47,7 @@ system = prmtop.createSystem(nonbondedMethod=CutoffNonPeriodic,
 # In[9]:
 
 barostat = openmm.MonteCarloBarostat(1.0*bar, 300.0*kelvin, 25)
-# system.addForce(barostat)
+system.addForce(barostat)
 
 
 # In[10]:
@@ -81,7 +82,7 @@ PDBReporter("mini_s.pdb",1).report(simulation,simulation.context.getState(getPos
 simulation.reporters.append(DCDReporter('output_s.dcd', 1000))
 simulation.reporters.append(StateDataReporter("output_s.log", 1000, step=True,
         potentialEnergy=True, temperature=True,volume=True))
-simulation.step(1000000)
+simulation.step(10000000)
 simulation.saveState("checkpoint_s.state")
 
 
