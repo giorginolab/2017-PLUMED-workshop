@@ -82,7 +82,7 @@ PDBReporter("mini_s.pdb",1).report(simulation,simulation.context.getState(getPos
 simulation.reporters.append(DCDReporter('output_s.dcd', 1000))
 simulation.reporters.append(StateDataReporter("output_s.log", 1000, step=True,
         potentialEnergy=True, temperature=True,volume=True))
-simulation.step(10000000)
+simulation.step(500000000)
 simulation.saveState("checkpoint_s.state")
 
 
