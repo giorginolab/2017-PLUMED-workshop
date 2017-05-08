@@ -1,0 +1,4 @@
+mol new diala_s.prmtop
+mol addfile output_s.xtc waitfor all
+pbc unwrap -sel "fragment 0" -all
+pbc wrap -sel water -compound fragment -center bb -centersel protein -all
