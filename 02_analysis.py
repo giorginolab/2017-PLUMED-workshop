@@ -57,39 +57,6 @@ ala3_rama_data.shape
 
 
 
-m=Molecule("villin/datasets/1/filtered/filtered.pdb")
-
-mca=m.copy()
-mca.filter("name CA")
-
-hydrophobic_resnames = ["ALA","VAL","ILE","LEU","MET","PHE","TYR","TRP","NLE"]
-hyd=numpy.in1d(mca.resname,hydrophobic_resnames)
-hyd_resid=mca.resid[hyd]
-
-pg=[]
-for resid in hyd_resid:
-    pg.append(PlumedGroup(m,
-                          "hg_{}".format(len(pg)),
-                          "resid {} and not name N CA C O and noh".format(resid)))
-
-ngroups=len(pg)
-
-group_pairs=[]
-for g1 in range(ngroups):
-    for g2 in range(g1+1,ngroups):
-        group_pairs.append(PlumedCV("COORDINATION",
-                                    GROUPA=pg[g1],
-                                    GROUPB=pg[g2],
-                                    R_0="3.5",
-                                    label="c_{}".format(len(group_pairs)+1)))
-
-
-
-armsd=PlumedCV("ALPHARMSD",RESIDUES="all", R_0=1.0, label="armsd")
-    
-rg=PlumedCV("GYRATION",ATOMS=mca,label="rg")
-
-
     
 # Step 1 - Load the trajectories
 sets = glob('villin/datasets/*/')

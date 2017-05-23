@@ -1,0 +1,30 @@
+
+Markov models
+  Suitable for large scale dynamics
+  Examples of successful cases
+  
+
+MM Workflow
+  Start in an arbitrary space, high dimensional <--- This is what Plumed addressess well
+    In a sense, MM has points in common with metadynamics in the treatment of internal dofs
+    One difference is that one does not need to resimulate, just re-evalute
+    (Partial exception when doing adaptive)
+  Reduce dimension with tICA
+  Cluster
+  Compute transition matrix at several lag times
+  Eigenvectors, etc
+
+Example
+  We use HTMD which implements the MM machinery (+ building and much more)
+  See tutorials on the website
+
+Limitations
+  Speed. Writes and reloads an XTC
+  Error checking.
+  
+  
+Conclusions 
+  Joins two powerful fiels (arbitrary CVs and MMs)...
+  by bridging respective state-of-the art implementations
+  
+  
