@@ -1,4 +1,6 @@
-
+# This is not part of the PLUMED-HTMD examples. It is here only as a
+# reminder of how to quickly script the system building and run (with
+# OpenMM) steps.
 
 # In[3]:
 

@@ -1,4 +1,22 @@
-# Following https://www.htmd.org/docs/latest/tutorials/protein-folding-analysis.html
+# A series of examples of the PLUMED CV object-oriented model in
+# HTMD. If you haven't done so yet, please review the simpler examples
+# before. Here we try and follow the "standard" Markov workflow for
+# the analysis of biomolecular simulations.
+
+# We shall follow the steps used at
+# https://www.htmd.org/docs/latest/tutorials/protein-folding-analysis.html
+# for this simple Ala3 system, which will be analyzed using the 6
+# phi-psi Ramachandran angles computed via Plumed. Note that this is
+# for illustration only: HTMD has "native" backbone torsion functions
+# for this.
+
+# The analysis is based on a single 1-us long trajectory of Ala3
+# solvated with ~8000 water molecules and simulated in the NPT
+# ensemble with OpenMM. Integration timestep was 2 fs, writing a frame
+# every 0.1 ps.
+
+# The results are not guaranteed to be correct. In particular, the
+# clustering function ignores the periodicity.
 
 
 from htmd import *

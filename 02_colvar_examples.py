@@ -1,14 +1,28 @@
-# Following https://www.htmd.org/docs/latest/tutorials/protein-folding-analysis.html
+# A series of examples of the PLUMED CV object-oriented model in HTMD.
 
-# Villin dataset (partitioned into 3 parts), 3GB:
-# http://pub.htmd.org/tutorials/protein-folding-analysis/datasets.tar.gz
+# First, install HTMD according to the instructions. To use the latest
+# version, clone from https://github.com/Acellera/htmd and prepend the
+# directory to PYTHONPATH. Note that as of June 2017 the features are
+# under development in the "toni-devel-plumed" branch, which will be
+# merged later.
 
+# In the unlikely case that  plumed 2 is not in path
+# import os
+# os.environ["PATH"]="/usr/local/bin:/Users/toni/bin:"+os.environ["PATH"]
+
+
+# Import HTMD
 from htmd import *
+
+# Until this is merged in master
 from htmd.projections.metricplumed2 import *
+
+# This is just to check if and where PLUMED2 is found.
 htmd.projections.metricplumed2._getPlumedRoot()
 
 
-# Trivial example
+
+# Trivial example: colvars as strings
 kidkix = Molecule("1kdx")
 kidkix.numFrames                    # 17 frames
 
@@ -18,6 +32,8 @@ metric = MetricPlumed2(['d1: DISTANCE ATOMS=1,200',
 metric.project(kidkix)
 
 
+
+# The "COORDINATION" variable, encapsulated in the PlumedCV object
 contacts = PlumedCV("COORDINATION", label="coo",
                     R_0=7,
                     GROUPA=PlumedGroup(kidkix,"kix","chain A and name CA"),
@@ -28,68 +44,22 @@ metric2.project(kidkix)
 
 
 
+# ------------------------
+
+
 
 # Show help
 # 
 htmd.projections.metricplumed2.genTemplate("COORDINATION")
+
 htmd.projections.metricplumed2.genTemplate("COORDINATION",include_optional=True)
 
+"""
+ This is a very basic tutorial. For further examples, see
+  * The presentation of this talk
+  * Embedded docstrings and their online version at [1], to be updated
+  * The other files, especially villin colvars
+"""  
 
 
-# Frames are saved every 20ps
-
-
-ala3=Molecule("ala3.prmtop")
-ala3.read("ala3_nvt_100ps.xtc")
-
-ala3_rama="""
-TORSION ATOMS=5,7,9,15   LABEL=ALA1_PHI
-TORSION ATOMS=7,9,15,17  LABEL=ALA1_PSI
-TORSION ATOMS=15,17,19,25  LABEL=ALA2_PHI
-TORSION ATOMS=17,19,25,27  LABEL=ALA2_PSI
-TORSION ATOMS=25,27,29,35  LABEL=ALA3_PHI
-TORSION ATOMS=27,29,35,37  LABEL=ALA3_PSI"""
-ala3_rama_cv=MetricPlumed2(ala3_rama)
-ala3_rama_data=ala3_rama_cv.project(ala3)
-
-ala3_rama_data.shape
-# (nframes,ncv)
-
-
-
-    
-# Step 1 - Load the trajectories
-sets = glob('villin/datasets/*/')
-sims = []
-for s in sets:
-    fsims = simlist(glob(s + '/filtered/*/'), 'datasets/1/filtered/filtered.pdb')
-    sims = simmerge(sims, fsims)
-
-
-
-# Step 2 - Decide the lower-dimensional projection
-
-
-# Step 3 - Perform the kinetic analysis. We follow the default workflow.
-
-# Step 3a - Cluster in microstates
-
-# Step 3b - Build MM
-
-# Plot timescales
-
-# Decide lag time
-
-# Plot fes
-
-# FES + microstates
-
-# Visualize the states (to choose source and sink states)
-
-# Kinetics on and off and dG
-
-# Plot flux pathways
-
-
-
-
+[1] https://www.htmd.org/docs/latest/htmd.projections.metricplumed2.html 
