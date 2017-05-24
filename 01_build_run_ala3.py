@@ -79,8 +79,8 @@ PDBReporter("ala3_mini.pdb",1).report(simulation,simulation.context.getState(get
 
 # In[19]:
 
-simulation.reporters.append(DCDReporter('ala3_nvt.dcd', 1000))
-simulation.reporters.append(StateDataReporter("ala3_nvt.log", 1000, step=True,
+simulation.reporters.append(DCDReporter('ala3_npt.dcd', 1000))
+simulation.reporters.append(StateDataReporter("ala3_npt.log", 1000, step=True,
         potentialEnergy=True, temperature=True,volume=True))
 simulation.step(500000000)
 simulation.saveState("ala3.state")
