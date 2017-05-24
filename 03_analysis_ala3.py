@@ -30,18 +30,21 @@ ala3_rama_data.shape
 
 
 # Since we are at it, strip out water
+ala3.filter("not water")
+ala3.write("ala3_nowater.pdb")
+ala3.write("ala3_npt_1us_every_100ps_nowater.xtc")
 
 
+# ------------------------
 
-# Use a simlist, i.e. (potentially) multiple trajectories. This is
+# Now use a simlist, i.e. (potentially) multiple trajectories. This is
 # more involved, but enables the Model classes etc. We can build a
 # simlist even with a single trajectory, as in this case.  Each
 # trajectory has to go in a separate directory.
 
 # Step 1 - Load the trajectories
 
-
-
+sl=simlist(['ala3/traj1'],"ala3_nowater.pdb")
 
 
 # Step 2 - Decide the lower-dimensional projection
@@ -54,31 +57,52 @@ TORSION ATOMS=17,19,25,27  LABEL=ALA2_PSI
 TORSION ATOMS=25,27,29,35  LABEL=ALA3_PHI
 TORSION ATOMS=27,29,35,37  LABEL=ALA3_PSI"""
 ala3_rama_cv=MetricPlumed2(ala3_rama)
-ala3_rama_data=ala3_rama_cv.project(ala3)
 
-ala3_rama_data.shape
-# (nframes,ncv)
+# Step 2a - Create the Metric, bind it, and project
+ala3_metric = Metric(sl)
 
+ala3_metric.set(ala3_rama_cv)
 
+ala3_data=ala3_metric.project()
+ala3_data.fstep=.1
+
+ala3_data.dat.shape             # 1 element only
+ala3_data.dat[0].shape          # 10000 frames x 6 CVs as expected
 
 
 # Step 3 - Perform the kinetic analysis. We follow the default workflow.
 
+# Optional: TICA
+# Optional: bootstrap
+
 # Step 3a - Cluster in microstates
+ala3_data.cluster(MiniBatchKMeans(n_clusters=100))
 
 # Step 3b - Build MM
+model=Model(ala3_data)
 
 # Plot timescales
+lags=numpy.linspace(1,stop=100,num=100)
+model.plotTimescales(lags=lags,units="frames")
 
-# Decide lag time
+# Decide lag time is 2 ns, 4 macrostates
+model.markovModel(2,4,units="ns")
 
 # Plot fes
+model.eqDistribution()
 
 # FES + microstates
 
 # Visualize the states (to choose source and sink states)
+model.viewStates(protein=True)
+
 
 # Kinetics on and off and dG
+kin = Kinetics(model, temperature=300,  source=3, sink=0)
+
+kin.getRates()
+kin.plotRates()
+
 
 # Plot flux pathways
 
