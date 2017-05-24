@@ -135,11 +135,55 @@ data.save("villin_data.save")
 
 
 # Note the shape!  data.dat contains the trajectories
-print(data.dat.shape)
+print("Trajectories: "+str(data.dat.shape))
 
 # Each data.dat[i] contains trajectory i, an array 500x139
 # 500 are the timesteps for that trajectory
 # 139 are the 136 COORDINATION + 1 COMBINE + 1 GYRATION + 1 ALPHARMSD
-print(data.dat[0].shape)
+print("Shape of trajectory 0: "+str(data.dat[0].shape))
+
+
+
+## --------------------------------------- 
+
+# Drop trajectories whose length is not mode
+data.dropTraj()
+data.dat.shape
+
+# Only keep the final 3 CVs (delete COORDINATION) - this will be more
+# automated in the future.
+last3CV=[136,137,138]
+
+# Bug: gives error, but works
+try:
+    data.dropDimensions(keep=last3CV)
+except:
+    pass
+
+
+
+
+## --------------------------------------- 
+
+# We may do TICA here. Let's not.
+#  tica = TICA(data,2,units='ns')
+#  dataTica = tica.project(2)
+
+# We may bootstrap here. Let's not.
+
+
+
+## --------------------------------------- 
+
+# Cluster
+data.cluster(MiniBatchKMeans(n_clusters=1000))
+
+# Build Markov Model
+model=Model(data)
+
+# The thrill starts here.  Check implied timescales' convergence.
+model.plotTimescales()
+
+
 
 
