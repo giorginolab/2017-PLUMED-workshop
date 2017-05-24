@@ -6,7 +6,10 @@
 # villin trajectories dataset from the URL above.
 
 # For the sake of illustration, we shall reproduce some of the CVs in
-# 
+# Giorgino T, Laio A, Rodriguez A. METAGUI 3: A graphical user
+# interface for choosing the collective variables in molecular
+# dynamics simulations. Computer Physics
+# Communications. 2017;217:204–9.  doi:10.1016/j.cpc.2017.04.009
 
 # First, install HTMD according to the instructions. To use the latest
 # version, clone from https://github.com/Acellera/htmd and prepend the
@@ -101,5 +104,8 @@ tmp2=MetricPlumed2(hydrophobic_contacts_sum)
 
 # The metric is now the composition of the 3 CVs + MOLINFO + their dependencies
 
-analysis_cv=MetricPlumed2([molinfo,armsd,rg,hydrophobic_contacts_sum])
+villin_cvs=MetricPlumed2([molinfo,armsd,rg,hydrophobic_contacts_sum])
 
+print(villin_cvs)
+
+## --------------------------------------- 
