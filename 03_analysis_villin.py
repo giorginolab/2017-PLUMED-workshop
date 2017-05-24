@@ -109,3 +109,37 @@ villin_cvs=MetricPlumed2([molinfo,armsd,rg,hydrophobic_contacts_sum])
 print(villin_cvs)
 
 ## --------------------------------------- 
+
+
+# Now build the simulation list and compute the metrics over it
+sets = glob('villin/datasets/*/')
+sims = []
+for s in sets:
+    fsims = simlist(glob(s + '/filtered/*/'), 'villin/datasets/1/filtered/filtered.pdb')
+    sims = simmerge(sims, fsims)
+
+# Create a new Metric on the trajectories
+metr = Metric(sims)
+
+# Connect it to the CVs defined
+metr.set(villin_cvs)
+
+# Evaluate - the 3 GB take approx 10 min on a MacBook 2016
+data = metr.project()
+
+# frame interval in ns
+data.fstep=.1                   
+
+# Save
+data.save("villin_data.save")
+
+
+# Note the shape!  data.dat contains the trajectories
+print(data.dat.shape)
+
+# Each data.dat[i] contains trajectory i, an array 500x139
+# 500 are the timesteps for that trajectory
+# 139 are the 136 COORDINATION + 1 COMBINE + 1 GYRATION + 1 ALPHARMSD
+print(data.dat[0].shape)
+
+
