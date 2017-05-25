@@ -1,7 +1,8 @@
 # A series of examples of the PLUMED CV object-oriented model in
 # HTMD. If you haven't done so yet, please review the simpler examples
-# before. Here we try and follow the "standard" Markov workflow for
-# the analysis of biomolecular simulations.
+# before. Here we code Ramachandran CVs strings and try and follow the
+# "standard" Markov workflow for the analysis of biomolecular
+# simulations.
 
 # We shall follow the steps used at
 # https://www.htmd.org/docs/latest/tutorials/protein-folding-analysis.html
@@ -13,10 +14,15 @@
 # The analysis is based on a single 1-us long trajectory of Ala3
 # solvated with ~8000 water molecules and simulated in the NPT
 # ensemble with OpenMM. Integration timestep was 2 fs, writing a frame
-# every 0.1 ps.
+# every 0.1 ps. 
 
-# The results are not guaranteed to be correct. In particular, the
-# clustering function ignores the periodicity.
+# The results are NOT converged. One single trajectory starting from a
+# stable state will be trapped. "Shooting" trajectories from
+# high-energy states is required. This is achieved e.g. via adaptive
+# sampling, or your favourite string/path method.
+
+# An additional, unrelated problem is that the clustering function
+# ignores the periodicity for PLUMED-based CVs.
 
 
 from htmd import *
