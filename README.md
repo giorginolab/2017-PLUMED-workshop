@@ -8,5 +8,10 @@ The files are meant to show the object model for Plumed 2's collective
 variables in HTMD. They are ordered roughly in the direction of increasing
 complexity.
 
-The examples are meant to be illustrative, not to give physically
-correct results!
+The examples are meant to be illustrative, not to give converged results!
+
+To download and install HTMD, see www.htmd.org. You may need to get
+the development version from GitHub (override with PYTHONPATH),
+possibly switching to the "toni-devel-plumed" branch until last-minute
+changes are merged.
+
