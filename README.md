@@ -4,6 +4,9 @@ PLUMED Workshop 2017
 Example files for the talk "PLUMED's collective variables in the High
 Throughput Molecular Dynamics analysis environment" (T. Giorgino).
 
+The [slides](slides/giorgino.pdf) for this talk are in the *slides* 
+directory and on the [PLUMED 2017 Workshop's repository](https://github.com/plumed/trieste2017).
+
 The files are meant to show the object model for Plumed 2's collective
 variables in HTMD. They are ordered roughly in the direction of increasing
 complexity.
